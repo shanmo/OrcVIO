@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot" default="orcvio_robot"/>
+  <arg name="fixed_frame_id" default="world"/>
+
+  
+  <arg name="config_file_object" default="$(find orcvio)/../../../config/object_feat.yaml"/>
+
+  <arg name="visualize_rviz" default="true" />
+
+  <!-- System Manager Nodelet  -->
+  <group ns="$(arg robot)">
+    <node pkg="arl_unity_ros_orcvio_bridge"
+          type="detection2trackedbbox.py"
+          name="detection2trackedbbox" >
+      <remap from="detections" to="/falcon/cam_left/detection" />
+      <remap from="keypoints" to="/starmap/keypoints" />
+    </node>
+    <node pkg="nodelet" type="nodelet" name="system"
+      args='standalone orcvio/SystemNodelet'
+      output="screen">
+
+      <param name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
+      <param name="child_frame_id" value="odom"/>
+
+      <remap from="~imu" to="/falcon/IMU"/>
+      <remap from="~cam0_image" to="/falcon/cam_left/image_raw"/>
+
+      <param name="config_file_template" value="$(find orcvio)/../../../config/unity.yaml"/>
+      <param name="config_file" value="$(find orcvio)/../../../cache/unity_exp.yaml"/>
+      <param name="result_file" value="$(find orcvio)/../../../cache/temp_rmse.txt"/>
+
+      <param name="load_groundtruth_flag" type="int" value="0"/>
+      <!-- <param name="use_left_perturbation_flag" type="int" value="1" /> -->
+
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="ObjectMapper"
+      args='standalone orcvio/ObjectMapperNodelet'
+      output="screen">
+
+          <param name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
+
+          <!-- camera extrinsics -->
+          <rosparam param="T_cam_imu">
+              [
+              0.0,  -1.0, 0.0, 0.1,
+              0.0,  0.0, -1.0, 0,
+              1.0, 0.0, 0.0, -0.1,
+              0.0,  0.0, 0.0, 1.0
+              ]
+          </rosparam>
+
+          <!-- bag topics -->
+          <param name="topic_keypoint"  type="string" value="/starmap/keypoints" />
+
+          <!-- for quadrotor  -->
+          <param name="topic_caminfo"  type="string" value="/falcon/cam_left/camera_info" />
+          <param name="topic_pose"  type="string" value="/orcvio_robot/system/poseout" />
+          <!-- <param name="topic_pose"  type="string" value="/unity_command/ground_truth/falcon/pose" /> -->
+          <!-- for car  -->
+          <!-- <param name="topic_caminfo"  type="string" value="/husky/camera/camera_info" />
+          <param name="topic_pose"  type="string" value="/unity_command/ground_truth/husky/pose" /> -->
+
+          <param name="max_object_feature_track"             type="int"    value="50" />
+          <param name="min_object_feature_track"               type="int"    value="10" />
+
+          <!-- object feature -->
+          <rosparam command="load" file="$(arg config_file_object)"/>
+          <param name="car_stl_resource" value="$(find orcvio)/launch/mesh_models/car.stl" />
+          
+          <!-- this has to be consistent with VIO config  -->
+          <param name="use_left_perturbation_flag"  type="bool" value="true" />
+          
+          <param name="use_new_bbox_residual_flag"  type="bool" value="false" />
+
+    </node>
+
+  </group>
+
+  <node name="publish_gt_path" pkg="orcvio" type="publish_gt_path" output="screen" clear_params="true"
+        required="false">
+      <!-- for quadrotor -->
+      <param name="topic_pose"  type="string" value="/unity_command/ground_truth/falcon/pose" />
+      <!-- for car  -->
+      <!-- <param name="topic_pose"  type="string" value="/unity_command/ground_truth/husky/pose" /> -->
+  </node>
+
+    <!-- open rviz  -->
+    <group if="$(arg visualize_rviz)" >
+      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find orcvio)/../../../ros_wrapper/src/orcvio/launch/rviz/orcvio_unity_object.rviz" />
+    </group>
+
+</launch>

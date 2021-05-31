@@ -1,0 +1,7 @@
+<library path="lib/libstarmap">
+  <class name="starmap/Starmap" type="starmap::Starmap" base_class_type="nodelet::Nodelet">
+    <description>
+    This is a Starmap Nodelet
+    </description>
+  </class>
+</library>

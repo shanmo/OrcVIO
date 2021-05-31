@@ -1,0 +1,35 @@
+object_classes:
+
+  #--------------------------------------------------------------------------------------------
+  # for chair category 
+  #--------------------------------------------------------------------------------------------
+
+  chair:
+    keypoints_num: 10
+    object_keypoints_mean:
+      [-0.16260029, -0.18636511,  0.16428348,  0.18096888, -0.174444  ,
+            -0.19166636,  0.1767874 ,  0.18786542, -0.19818088,  0.19658388,
+      0.17052046,  0.13219248,  0.17011265,  0.13199527, -0.19604203,
+            -0.21056669, -0.19605567, -0.20875473,  0.19473798,  0.19352854,
+      -0.44795494, -0.00819907, -0.44773116, -0.00803745, -0.44755495,
+            -0.01097987, -0.44755495, -0.01101388,  0.55173099,  0.55204506]
+    object_mean_shape:
+      [0.4, 0.4, 1]
+    aliases:
+      - bench
+      - sofa
+    marker_color: [0.0, 0.0, 1.0]
+
+#--------------------------------------------------------------------------------------------
+# other configs 
+#--------------------------------------------------------------------------------------------
+
+# whether to fine tune object pose using Levenberg Marquardt
+# do_fine_tune_object_pose_using_lm: false 
+do_fine_tune_object_pose_using_lm: true       
+
+# The directory where result files are saved per object
+result_dir_path_object_map: "/home/erl/Workspace/orcvio_cpp/cache/object_map/"
+
+# The directory where bounding boxes are saved 
+result_dir_path_2d_bbox: "/home/erl/Workspace/orcvio_cpp/cache/object_2d_bbox_info.txt"

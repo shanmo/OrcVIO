@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="path_bag" default="$(find orcvio)/data/bags/docker_compose_opcity_20cars_quad_no_occ_with_doors.bag"/>
+  <arg name="robot" default="falcon"/>
+  <arg name="fixed_frame_id" default="world"/>
+  <arg name="config_file_object" default="$(find orcvio)/../../../config/object_feat.yaml"/>
+  <arg name="visualize_rviz" default="true" />
+
+  <node pkg="rosbag" type="play" name="rosbag" args="$(arg path_bag)" required="true">
+  </node>
+  <include file="$(find orcvio)/launch/unity/orcvio_unity_object_online.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
+    <arg name="config_file_object" value="$(arg config_file_object)"/>
+    <arg name="visualize_rviz" value="$(arg visualize_rviz)"/>
+  </include>
+</launch>

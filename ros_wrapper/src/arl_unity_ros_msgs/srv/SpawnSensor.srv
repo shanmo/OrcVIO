@@ -1,0 +1,7 @@
+string type
+string name
+string parent
+string topic
+string frame_id
+geometry_msgs/Pose pose
+string configure

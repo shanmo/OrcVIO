@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <arg name="nodelet_manager" default="orcvio_nodelet_manager" />
+  <node pkg="nodelet" type="nodelet" name="sort_ros"
+        args="load sort_ros/SortRos $(arg nodelet_manager)" >
+    <param name="image_topic" value="image_raw_0" />
+    <param name="bbox_topic" value="darknet_ros/bounding_boxes_0" />
+    <param name="tracked_bbox_topic" value="tracked_bounding_boxes_0" />
+  </node>
+</launch>

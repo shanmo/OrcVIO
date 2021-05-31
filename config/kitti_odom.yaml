@@ -1,0 +1,343 @@
+%YAML:1.0
+
+# output directory
+output_dir: "/home/erl/Workspace/orcvio_cpp/cache/"
+
+# switches
+if_FEJ: 0    # 0(false) or 1(true)
+estimate_extrin: 0    # 0(false) or 1(true)
+estimate_td: 0    # 0(false) or 1(true)
+calib_imu_instrinsic: 0    # 0(false) or 1(true)
+
+# camera instrinsic
+
+# 2011 09 26 
+camera_model: "pinhole"       # only support "pinhole"
+distortion_model: "radtan"    # only support "radtan" and "equidistant"
+resolution_width: 1242
+resolution_height: 375
+intrinsics:
+   fx: 721.5377
+   fy: 721.5377
+   cx: 609.5593
+   cy: 172.8540
+distortion_coeffs:
+   k1: 0.0
+   k2: 0.0
+   p1: 0.0
+   p2: 0.0
+# imu-camera extrinsic, including spacial and temporal parameters
+T_cam_imu: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data:
+      [9.98747206e-04, -9.99990382e-01,  4.25937849e-03, -3.14076870e-01,
+       8.41690183e-03, -4.25082114e-03, -9.99955570e-01,  7.19452036e-01,
+       9.99964049e-01,  1.03455328e-03,  8.41257521e-03, -1.08908294e+00,
+         0 ,                  0 ,                  0 ,  1.000000000000000]
+td: 0.0
+
+# # 2011 09 30  
+# camera_model: "pinhole"       # only support "pinhole"
+# distortion_model: "radtan"    # only support "radtan" and "equidistant"
+# resolution_width: 1226
+# resolution_height: 370
+# intrinsics:
+#    fx: 707.0912
+#    fy: 707.0912
+#    cx: 601.8873
+#    cy: 183.1104
+# distortion_coeffs:
+#    k1: 0.0
+#    k2: 0.0
+#    p1: 0.0
+#    p2: 0.0
+# # imu-camera extrinsic, including spacial and temporal parameters
+# T_cam_imu: !!opencv-matrix
+#    rows: 4
+#    cols: 4
+#    dt: d
+#    data:
+#       [-0.00108864, -0.99997635,  0.00678718, -0.25008612,
+#        -0.00851207, -0.00677767, -0.99994087,  0.73412053,
+#         0.99996318, -0.00114634, -0.00850449, -1.13803616,
+#                0.0,         0.0,         0.0,         1.0]
+# td: 0.007
+
+# 2011 10 03  
+# camera_model: "pinhole"       # only support "pinhole"
+# distortion_model: "radtan"    # only support "radtan" and "equidistant"
+# resolution_width: 1241
+# resolution_height: 376
+# intrinsics:
+#    fx: 718.856
+#    fy: 718.856
+#    cx: 607.1928
+#    cy: 185.2157
+# distortion_coeffs:
+#    k1: 0.0
+#    k2: 0.0
+#    p1: 0.0
+#    p2: 0.0
+# # imu-camera extrinsic, including spacial and temporal parameters
+# T_cam_imu: !!opencv-matrix
+#    rows: 4
+#    cols: 4
+#    dt: d
+#    data:
+#       [0.00119669, -0.99997658,  0.00673804, -0.32541053,
+#        -0.00924124, -0.00674881, -0.99993453,  0.75404978,
+#         0.99995649,  0.00113434, -0.0092491,  -1.09493279,
+#                0.0,         0.0,         0.0,         1.0]
+# td: 0.007
+
+# TODO: if calibrate camera instrinsic online
+
+# visual front-end parameters
+pyramid_levels: 2
+patch_size: 21
+fast_threshold: 10
+max_iteration: 30
+track_precision: 0.01
+ransac_threshold: 1
+max_features_num: 200
+min_distance: 20
+flag_equalize: 1    # 0(false) or 1(true)
+pub_frequency: 10
+
+# window size
+sw_size: 20
+
+# online reset thresholds
+position_std_threshold: 8.0
+rotation_threshold: 0.2618
+translation_threshold: 0.4
+tracking_rate_threshold: 0.5
+
+# feature triangulation parameters
+least_observation_number: 3
+max_track_len: 6
+feature_translation_threshold: -1.0
+
+# imu and camera measurement noise parameters
+noise_gyro: 2.0000e-5
+noise_acc: 3.0000e-3
+noise_gyro_bias: 2.0000e-4
+noise_acc_bias: 2.0000e-3
+# noise_feature: 0.008
+noise_feature: 1
+
+# filter intial values
+initial_covariance_orientation: 4e-4
+initial_covariance_velocity: 0.25
+initial_covariance_position: 1.0
+initial_covariance_gyro_bias: 4e-4
+initial_covariance_acc_bias: 0.01
+initial_covariance_extrin_rot: 3.0462e-8
+initial_covariance_extrin_trans: 9e-8
+
+# fej settings
+reset_fej_threshold: 10.11
+
+# zupt settings
+# if_ZUPT_valid: 1    # 0(false) or 1(true)
+if_ZUPT_valid: 0    # 0(false) or 1(true)
+if_use_feature_zupt_flag: 0 # 0(false) or 1(true)
+# if_use_feature_zupt_flag: 1 # 0(false) or 1(true)
+zupt_max_feature_dis: 2e-3
+zupt_noise_v: 1e-2    # std
+zupt_noise_p: 1e-2
+zupt_noise_q: 3.4e-2
+
+# static initialization setting
+static_duration: 1.0
+
+# measurement rate
+imu_rate: 250
+img_rate: 10
+
+# augmented feature state settings
+max_features_in_one_grid: 1     # pure msckf if set to 0
+aug_grid_rows: 5
+aug_grid_cols: 6
+feature_idp_dim: 1              # 1 or 3
+
+# if apply Schmidt filter
+use_schmidt: 0    # 0(false) or 1(true)
+# left or right perturbation 
+use_left_perturbation_flag: 0 # 0(right) or 1(left)
+# use_left_perturbation_flag: 1 # 0(right) or 1(left)
+# use euler method or closed form covariance propagation 
+use_closed_form_cov_prop_flag: 1 # 0(euler method) or 1(closed form)
+# use original larvio 
+use_larvio_flag: 0 # 0(orcvio) or 1(larvio)
+# use_larvio_flag: 1 # 0(orcvio) or 1(larvio)
+
+# the threshold for chi square 
+chi_square_threshold_feat: 0.95
+# the threshold for cost in feature LM 
+feature_cost_threshold: 1e3
+# the threshold for distance check in feature LM 
+init_final_dist_threshold: 1e3
+# the flag whether we discard large update 
+discard_large_update_flag: 1
+
+# whether to use object residual to update camera pose 
+use_object_residual_update_cam_pose_flag: 1 # 0(not use) or 1(use)
+# use_object_residual_update_cam_pose_flag: 0 # 0(not use) or 1(use)
+
+# whether we skip the update step 
+prediction_only_flag: 0
+
+# if using ground-truth for initilization
+initial_use_gt: 1
+
+# we always set initial position to zero, 
+# and initial quat to identity
+initial_pos: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [0,0,0]
+initial_ba: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [0.0, 0.0, 0.0]
+initial_bg: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [0.0, 0.0, 0.0]
+
+# setting for odometry 00
+# initial_state_time: 0.41130466960352
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [-0.000989836,  -0.00224484,   0.00408037,     0.999989]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [8.2812, 0.437619,  0.18045]
+
+# # setting for odometry 02
+# initial_state_time: 0.31141454935622
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [0.00112102, 0.00162767, 0.00205979,   0.999996]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [14.5959, 0.0545992,  0.107376]
+
+# there is something wrong with odom 03 data 
+# # setting for odometry 03
+# initial_state_time: 0.41081545
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [0.0023379,  0.00205997, -0.00069249,    0.999995]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [-0.108168, -0.324611,   9.21989]
+
+# # setting for odometry 04
+# initial_state_time: 0.31221437037037
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [0.00156011, 0.000414246, 0.000325788,    0.999999]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [12.6526, -0.0172957,  0.0976453]
+
+# # setting for odometry 05
+# initial_state_time: 0.51236014492754
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [0.0033556, -0.00354937,  0.00397839,     0.99998]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [5.46048, 0.0582262,  0.091898]
+
+# # setting for odometry 06
+# initial_state_time: 0.41180781818182
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [-0.00139287, -0.000244005,   0.00135393 ,    0.999998]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [11.4746, 0.110249, 0.167895]
+
+# setting for odometry 07
+# initial_state_time: 1.211872
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [-0.004187175052925965, -0.0007450333030232215, 0.004119334595455739, 0.999982472424758]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [1.71855,  0.268609, 0.0340593]
+
+# # setting for odometry 08
+# initial_state_time: 0.41183316953317
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [-0.00426419,  0.00150192, -0.00137316,    0.999989]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [7.31432, -0.0633957,    1.69386]
+
+# # setting for odometry 09
+# initial_state_time: 0.71154012578616
+# initial_quat: !!opencv-matrix
+#    rows: 4
+#    cols: 1
+#    dt: d
+#    data: [0.00660524, -0.00252879,  0.00653841,    0.999954]
+# initial_vel: !!opencv-matrix
+#    rows: 3
+#    cols: 1
+#    dt: d
+#    data: [3.26524, -0.0569791,  0.0571132]
+
+# setting for odometry 10
+initial_state_time: 0.91149066666667
+initial_quat: !!opencv-matrix
+   rows: 4
+   cols: 1
+   dt: d
+   data: [-0.00047348,  0.00624186,   -0.151103,    0.988498]
+initial_vel: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [2.38645, -0.666818, 0.0784056]

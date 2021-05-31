@@ -1,0 +1,10 @@
+# Robot type (e.g. Husky, Warthog)
+string type
+# Robot name (e.g. samoyed, warty)
+string name
+# Base frame name (e.g. samoyed/base_link, warty/base_link)
+string frame_id
+# Starting pose, in world coordinates
+geometry_msgs/Pose pose
+# Joint definitions
+JointDescription[] joints

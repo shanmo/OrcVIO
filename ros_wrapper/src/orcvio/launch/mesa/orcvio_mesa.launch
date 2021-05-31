@@ -1,0 +1,44 @@
+<launch>
+
+  <arg name="robot" default="orcvio_robot"/>
+  <arg name="fixed_frame_id" default="world"/>
+
+  <!-- bag parameters -->
+  <arg name="path_bag" default="/media/erl/disk1/orcvio/mesa_rosbags/indemind_mesa_test_2.bag" />
+  <arg name="visualize_rviz" default="true" />
+
+  <!-- System Manager Nodelet  -->
+  <group ns="$(arg robot)">
+    <node pkg="nodelet" type="nodelet" name="system"
+      args='standalone orcvio/SystemNodelet'
+      output="screen">
+
+      <param name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
+      <param name="child_frame_id" value="odom"/>
+
+      <remap from="~imu" to="/indemind/imu"/>
+      <remap from="~cam0_image" to="/indemind/left/image_raw"/>
+
+      <param name="config_file_template" value="$(find orcvio)/../../../config/mesa.yaml"/>
+      <param name="config_file" value="$(find orcvio)/../../../cache/mesa_exp.yaml"/>
+      <param name="result_file" value="$(find orcvio)/../../../cache/temp_rmse.txt"/>
+
+      <param name="load_groundtruth_flag" type="int" value="0"/>
+      <!-- <param name="use_left_perturbation_flag" type="int" value="1" /> -->
+
+      <param name="publish_tf" type="bool" value="true" />
+
+    </node>
+  </group>
+
+  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/indemind/left/image/ raw out:=/indemind/left/image_raw" />
+
+    <!-- play the dataset -->
+    <node pkg="rosbag" type="play" name="rosbag" args="$(arg path_bag)" required="true"/>
+    
+    <!-- open rviz  -->
+    <group if="$(arg visualize_rviz)" >
+      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find orcvio)/../../../ros_wrapper/src/orcvio/launch/rviz/orcvio_mesa.rviz" />
+    </group>
+
+</launch>
