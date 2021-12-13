@@ -48,7 +48,10 @@ roslaunch orcvio orcvio_euroc.launch
 - how to setup front end refer to wiki 
 - we also have an OrcVIO-lite version which only uses bounding boxes, no keypoints, this mode can be enabled by changing the flag in the launch file 
 - visualization 
-> ![demo](assets/demo-unity.gif)
+> trajectory is more accurate with object residual update 
+![demo](assets/demo-unity.gif)
+trajectory is less accurate without object residual update 
+![demo](assets/demo-unity-no-object-residual-update.gif)
 
 ## Evaluation 
 
