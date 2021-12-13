@@ -1,6 +1,6 @@
 ## OrcVIO 
 
-This repo implements [OrcVIO: Object residual constrained Visual-Inertial Odometry](http://me-llamo-sean.cf/orcvio_githubpage/)
+This repo implements [OrcVIO: Object residual constrained Visual-Inertial Odometry](https://moshan.cf/orcvio_githubpage/)
 
 ## Dependencies 
 
@@ -47,6 +47,8 @@ roslaunch orcvio orcvio_euroc.launch
 ```
 - how to setup front end refer to wiki 
 - we also have an OrcVIO-lite version which only uses bounding boxes, no keypoints, this mode can be enabled by changing the flag in the launch file 
+- visualization 
+> ![demo](assets/demo-unity.gif)
 
 ## Evaluation 
 
