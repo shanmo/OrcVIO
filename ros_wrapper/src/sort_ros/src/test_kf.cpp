@@ -16,7 +16,7 @@ Point mousePosition = Point(winWidth >> 1, winHeight >> 1);
 // mouse event callback
 void mouseEvent(int event, int x, int y, int flags, void *param)
 {
-	if (event == CV_EVENT_MOUSEMOVE) {
+	if (event == cv::EVENT_MOUSEMOVE) {
 		mousePosition = Point(x, y);
 	}
 }

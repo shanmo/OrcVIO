@@ -280,7 +280,7 @@ namespace sort_ros
                 for (const auto & pt : (*it).centroid_history)
                 {
                     cur_centroid = pt; 
-                    circle(detection_image, pt, 3, color, CV_FILLED, 0); 
+                    circle(detection_image, pt, 3, color, cv::FILLED, 0); 
 
                     if (count != 0)
                     {

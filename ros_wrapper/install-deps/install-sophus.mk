@@ -2,7 +2,7 @@
 SHELL=/bin/bash -l
 ROOT_DIR?=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-SOPHUS_VERSION?=v1.0.0
+SOPHUS_VERSION?=fig-ignore-deprecated-copy
 SOURCE_PREFIX?=$(HOME)/.local/src/
 STOW_PREFIX?=$(SOURCE_PREFIX)/stow
 
@@ -21,7 +21,7 @@ $(SOPHUS_INSTALLED): $(SOPHUS_DIR)/CMakeLists.txt \
 	-mkdir -p $(dir $<)/build
 	cd $(dir $<)/build/ \
 		&& . $(dir $<)/.sys-dependencies \
-		&& cmake .. -DCMAKE_INSTALL_PREFIX=$(SOPHUS_INSTALL_DIR) \
+		&& cmake .. -DCMAKE_CXX_FLAGS="-Wno-error" -DCMAKE_INSTALL_PREFIX=$(SOPHUS_INSTALL_DIR) \
 	    && $(MAKE) -C $(dir $<)/build install
 
 $(SOPHUS_DIR)/.sys-dependencies: #$(if $(isflux), ,$(CUDA_INSTALLED))
@@ -33,7 +33,7 @@ $(SOPHUS_DIR)/.sys-dependencies: #$(if $(isflux), ,$(CUDA_INSTALLED))
 
 $(SOPHUS_DIR)/CMakeLists.txt:
 	-mkdir $(dir $(SOPHUS_DIR))
-	git clone  https://github.com/strasdat/Sophus.git $(@D)
+	git clone  https://github.com/wecacuee/Sophus.git $(@D)
 	cd $(@D) && git checkout $(SOPHUS_VERSION)
 	touch $@
 

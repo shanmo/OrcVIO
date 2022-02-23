@@ -103,19 +103,19 @@ namespace orcvio
 
 #ifdef SYNC_WITH_IMG 
         // for plotting
-        sub_sem = make_unique<message_filters::Subscriber<starmap_ros_msgs::TrackedBBoxListWithKeypoints>>(nh, topic_keypoint, 1);
-        sub_img = make_unique<message_filters::Subscriber<sensor_msgs::Image>>(nh, topic_image, 1);
+        sub_sem = orcvio::make_unique<message_filters::Subscriber<starmap_ros_msgs::TrackedBBoxListWithKeypoints>>(nh, topic_keypoint, 1);
+        sub_img = orcvio::make_unique<message_filters::Subscriber<sensor_msgs::Image>>(nh, topic_image, 1);
         namespace sph = std::placeholders; // for _1, _2, ...
 
         // fixed queue size 
         // const int queue_size = 1; 
-        // sub_sem_img = make_unique<message_filters::TimeSynchronizer<sensor_msgs::Image, starmap_ros_msgs::TrackedBBoxListWithKeypoints>>(*sub_img, *sub_sem, queue_size);
+        // sub_sem_img = orcvio::make_unique<message_filters::TimeSynchronizer<sensor_msgs::Image, starmap_ros_msgs::TrackedBBoxListWithKeypoints>>(*sub_img, *sub_sem, queue_size);
         // approximate sync 
-        sub_sem_img = make_unique<message_filters::Synchronizer<MySyncPolicy> > (MySyncPolicy(100), *sub_img, *sub_sem);
+        sub_sem_img = orcvio::make_unique<message_filters::Synchronizer<MySyncPolicy> > (MySyncPolicy(100), *sub_img, *sub_sem);
 
         sub_sem_img->registerCallback(std::bind(&ObjectInitNode::callback_sem, this, sph::_1, sph::_2));
 
-        image_trans = make_unique<image_transport::ImageTransport>(nh);
+        image_trans = orcvio::make_unique<image_transport::ImageTransport>(nh);
         trackImagePublisher = image_trans->advertise(track_image_topic, 10);
 #endif 
 

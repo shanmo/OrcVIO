@@ -3,7 +3,7 @@
   <arg name="nodelet_manager" default="orcvio_nodelet_manager" />
   <node pkg="nodelet" type="nodelet" name="starmap"
         args="standalone starmap/Starmap"
-        launch-prefix="xterm -e gdb -ex run -args "
+        launch-prefix=""
         output="screen">
     <param name="image_topic" value="/husky/camera/image_raw" />
     <param name="bbox_topic" value="/sort_ros/tracked_bounding_boxes" />
