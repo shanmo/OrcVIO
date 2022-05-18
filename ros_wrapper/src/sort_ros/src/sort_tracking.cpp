@@ -56,6 +56,7 @@ namespace sort_ros
         iou_threshold = config.iou_threshold;
         use_centroid_dist_flag = config.use_centroid_dist_flag;
         centroid_dist_threshold = config.centroid_dist_threshold;
+        class_labels.insert(config.class_labels.begin(), config.class_labels.end());
     }
 
     void SortTracker::update(vector<TrackingBox> detFrameData)
@@ -300,10 +301,11 @@ namespace sort_ros
 
     void SortTracker::gen_class()
     {
+        std::cerr << "WARNING: gen_class is deprecated. Use Config.class_labels instead\n";
         // for kitti dataset 
-        // class_labels.insert("car");
-        // class_labels.insert("truck");
-        // class_labels.insert("bus");
+        class_labels.insert("car");
+        class_labels.insert("truck");
+        class_labels.insert("bus");
 
         // for tum rgbd dataset 
         // class_labels.insert("laptop");
@@ -317,7 +319,7 @@ namespace sort_ros
         // class_labels.insert("chair");
 
         // for dcist 
-        class_labels.insert("barrel");
+        // class_labels.insert("barrel");
     }
 
 

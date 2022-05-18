@@ -6,5 +6,24 @@
     <param name="image_topic" value="image_raw_0" />
     <param name="bbox_topic" value="darknet_ros/bounding_boxes_0" />
     <param name="tracked_bbox_topic" value="tracked_bounding_boxes_0" />
+    <param name="valid_class_labels"  type="yaml"
+           value="[car, truck, bus]"
+           />
+
+    <!-- valid_class_labels for different datasets
+        // for tum rgbd dataset 
+        // - laptop
+        // - book
+        // - tvmonitor
+        // - cup
+        // - keyboard
+        // - mouse
+
+        // for visma dataset
+        // [chair]
+
+        // for dcist 
+        // [barrel];
+        -->
   </node>
 </launch>

@@ -2,11 +2,10 @@ import rosbag
 import sys
 
 if __name__ == '__main__':
-    input_bag1 = sys.argv[1]
-    input_bag2 = sys.argv[2]
-    output_bag = sys.argv[3]
+    input_bags = sys.argv[1:-1]
+    output_bag = sys.argv[-1]
     with rosbag.Bag(output_bag, 'w') as outbag:
-        for input_bag in (input_bag1, input_bag2):
+        for input_bag in input_bags:
             for topic, msg, t in rosbag.Bag(input_bag).read_messages():
                 # This also replaces tf timestamps under the assumption 
                 # that all transforms in the message share the same timestamp

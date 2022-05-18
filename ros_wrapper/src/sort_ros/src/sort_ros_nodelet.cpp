@@ -57,6 +57,10 @@ virtual void onInit()
     private_nh.param<double>("iou_threshold", config.iou_threshold, 0.3);
     private_nh.param<double>("centroid_dist_threshold", config.centroid_dist_threshold, 50);
     private_nh.param<bool>("use_centroid_dist_flag", config.use_centroid_dist_flag, true);
+    private_nh.param<std::vector<std::string> >(
+        "valid_class_labels", config.class_labels,
+        std::vector<std::string>(0));
+
     sort_tracker.set_config(config);
 
     boundingBoxesPublisher_ = private_nh.advertise<sort_ros::TrackedBoundingBoxes>(tracked_bbox_topic, 10);

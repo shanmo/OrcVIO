@@ -48,7 +48,7 @@ namespace starmap
 
   private:
   virtual void onInit() {
-    NODELET_DEBUG("Initializing ");
+    NODELET_WARN("Initializing ");
     namespace sph = std::placeholders; // for _1, _2, ...
     std::string image_topic, bbox_topic, keypoint_topic, visualization_topic,
     starmap_model_path;
@@ -76,7 +76,7 @@ namespace starmap
 
     auto model = starmap::model_load(starmap_model_path, gpu_id);
 
-    NODELET_DEBUG("Subscribing to %s", image_topic.c_str());
+    NODELET_INFO("Subscribing to %s", image_topic.c_str());
     image_trans_ = make_unique<image_transport::ImageTransport>(private_nh);
     image_sub_.subscribe(nh, image_topic, 10);
     bbox_sub_.subscribe(nh, bbox_topic, 10);
@@ -147,7 +147,7 @@ namespace starmap
   void messageCb(torch::jit::script::Module model,
                  const sensor_msgs::ImageConstPtr& message,
                  const sort_ros::TrackedBoundingBoxesConstPtr& bboxes) {
-    NODELET_DEBUG("Callback called ... ");
+    NODELET_INFO("Callback called ... ");
     auto private_nh = getPrivateNodeHandle();
     int input_res;
     private_nh.param<int>("input_res", input_res, 256);
