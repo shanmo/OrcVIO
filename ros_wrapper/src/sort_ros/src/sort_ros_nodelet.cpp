@@ -74,9 +74,7 @@ virtual void onInit()
     bbox_sub_ = make_unique<message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>>(nh, bbox_topic, 1);
 
 
-    // sub_ = make_unique<message_filters::TimeSynchronizer<sensor_msgs::Image, darknet_ros_msgs::BoundingBoxes>>(*image_sub_, *bbox_sub_, 10);
-    // ApproximateTime takes a queue size as its constructor argument, hence MySyncPolicy(10)
-    sub_ = make_unique<message_filters::Synchronizer<MySyncPolicy> > (MySyncPolicy(100), *image_sub_, *bbox_sub_);
+    sub_ = make_unique<message_filters::TimeSynchronizer<sensor_msgs::Image, darknet_ros_msgs::BoundingBoxes>>(*image_sub_, *bbox_sub_, /*queue_size=*/100);
 
     sub_->registerCallback(std::bind(&SortRos::messageCb, this, sph::_1, sph::_2));
 
@@ -162,9 +160,7 @@ void publishDetectionImage()
 std::unique_ptr<message_filters::Subscriber<sensor_msgs::Image>> image_sub_;
 std::unique_ptr<message_filters::Subscriber<darknet_ros_msgs::BoundingBoxes>> bbox_sub_;
 
-typedef message_filters::sync_policies::ExactTime<sensor_msgs::Image, darknet_ros_msgs::BoundingBoxes> MySyncPolicy;
-// std::unique_ptr<message_filters::TimeSynchronizer<sensor_msgs::Image, darknet_ros_msgs::BoundingBoxes>> sub_;
-std::unique_ptr<message_filters::Synchronizer<MySyncPolicy> > sub_;
+std::unique_ptr<message_filters::TimeSynchronizer<sensor_msgs::Image, darknet_ros_msgs::BoundingBoxes>> sub_;
 
 ros::Publisher boundingBoxesPublisher_;
 

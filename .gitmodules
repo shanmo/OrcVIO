@@ -15,3 +15,6 @@
 	url = https://github.com/catkin/catkin_simple.git
 	branch = master
 
+[submodule "ros_wrapper/src/StarMap/models"]
+	path = ros_wrapper/src/StarMap/models
+	url = https://github.com/wecacuee/StarMap-models.git

@@ -1,6 +1,10 @@
-VER=1.4.0
-CUVER=cu101
-URL=https://download.pytorch.org/libtorch/$CUVER/libtorch-cxx11-abi-shared-with-deps-$VER.zip
+# Pytorch version
+VER=1.8
+VERPATH=1.8.2
+# Cuda version
+CUVER=cu111
+
+URL=https://download.pytorch.org/libtorch/lts/${VERMIN}/cu111/libtorch-cxx11-abi-shared-with-deps-${VERPATH}%2B${CUVER}.zip
 SOURCE_PREFIX=${HOME}/.local/src
 STOW_PREFIX=${SOURCE_PREFIX}/stow
 if [ ! -f "${STOW_PREFIX}/libtorch-$VER/share/cmake/Torch/TorchConfig.cmake" ]; then

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
   <arg name="bagfile"   />
-  <arg name="nodelet_manager" default="orcvio_nodelet_manager" />
-  <node pkg="nodelet" type="nodelet" args="manager" name="$(arg nodelet_manager)" />
+  <arg name="nodelet_manager" default="darknet_ros_nodelet_manager" />
   <arg name="image_topic" default="/camera/left/image_raw" />
   <param name="/darknet_ros/image_view/enable_console_output" type="bool" value="false" />
   <param name="/darknet_ros/image_view/enable_opencv" type="bool" value="false" />
 
 
   <!-- play bag file -->
-  <node pkg="rosbag" type="play" name="whuvid" args=" $(arg bagfile)" required="true">
+  <node pkg="rosbag" type="play" name="whuvid" args="-d 5 $(arg bagfile)" required="true">
     <remap from="/camera/left/image_raw" to="$(arg image_topic)" />
   </node>
 
@@ -21,13 +20,13 @@
 
   <!-- run object detector  file  -->
   <arg name="bbox_topic" default="/camera/left/bounding_boxes" />
-  <include file="$(find darknet_ros)/launch/darknet_ros.launch" >
-    <arg name="image" value="$(arg image_topic)" />
+  <include file="$(find darknet_ros)/launch/darknet_ros_nodelet.launch" >
 
     <!-- ROS and network parameter files -->
     <arg name="ros_param_file"             default="$(find starmap)/launch/config/ros.yaml"/>
+    <arg name="network_param_file" value="$(find darknet_ros)/config/yolov3.yaml" />
     <!-- arg name="launch_prefix" value="gdb -ex run -args"/ -->
-    <remap from="/camera/left/bounding_boxes" to="$(arg bbox_topic)" />
+    <!-- remap from="/camera/left/bounding_boxes" to="$(arg bbox_topic)" /-->
   </include>
 
   <!-- sort_ros.launch 
@@ -56,9 +55,8 @@
   -->
   <arg name="keypoint_topic" default="/camera/left/keypoints" />
   <node pkg="nodelet" type="nodelet" name="starmap"
-        args="standalone starmap/Starmap "
-        output="screen"
-        launch-prefix="" >
+        args="load starmap/Starmap $(arg nodelet_manager)"
+         >
     <param name="image_topic" value="$(arg image_topic)" />
     <param name="bbox_topic" value="$(arg tracked_bbox_topic)" />
     <param name="keypoint_topic" value="$(arg keypoint_topic)" />
@@ -74,7 +72,8 @@
         args="$(eval
               arg('image_topic') + ' '
               + arg('tracked_bbox_topic') + ' '
-              + arg('bbox_topic')
+              + arg('bbox_topic') + ' '
+              + arg('keypoint_topic')
               + ' -O ' + arg('bagfile')[:-4] + '-bbox.bag'
               )"
         />
