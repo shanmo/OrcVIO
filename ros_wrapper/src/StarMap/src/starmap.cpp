@@ -273,8 +273,9 @@ const std::string&
   else if (object_class == "diningtable")
   {
     return table_labels_[min_index];
+  } else {
+      throw std::runtime_error("Unknown object_class");
   }
-
 }
 
 const cv::Scalar
@@ -471,6 +472,8 @@ Mat tensorToMat(const at::Tensor &tensor)
     return Mat(sizes[0], sizes[1], CV_32FC(sizes[2]), tensor_c.data_ptr());
   } else if (tensor.ndimension() == 2) {
     return Mat(sizes[0], sizes[1], CV_32F, tensor_c.data_ptr());
+  } else {
+      throw std::runtime_error("Cannot handle tensor dimensions other than 2 or 3");
   }
 }
 
@@ -536,11 +539,11 @@ cv::Mat extract_patch(const cv::Mat& hm, const cv::Point2i& pt,
                       const int rx = 1,
                       const int ry = 1)
 {
-  assert(pt.x - rx >= 0);
-  assert(pt.y - ry >= 0);
-  assert(pt.y + ry < hm.rows);
-  assert(pt.x + rx < hm.cols);
-  assert(hm.type() == CV_32FC1);
+  gsl_Expects(pt.x - rx >= 0);
+  gsl_Expects(pt.y - ry >= 0);
+  gsl_Expects(pt.y + ry + 1 < hm.rows);
+  gsl_Expects(pt.x + rx + 1 < hm.cols);
+  gsl_Expects(hm.type() == CV_32FC1);
   cv::Rect patchrect(pt.x - rx,
                      pt.y - ry,
                      2 * ry + 1,
@@ -663,11 +666,11 @@ torch::jit::script::Module
              const int gpu_id)
 {
   // model = torch.load(opt.loadModel)
-  auto model = torch::jit::load(starmap_filepath);
-  torch::DeviceType device_type = gpu_id >= 0 ? torch::DeviceType::CUDA : torch::DeviceType::CPU;
   int device_id = gpu_id >= 0 ? gpu_id : 0;
+  torch::DeviceType device_type = gpu_id >= 0 ? torch::DeviceType::CUDA : torch::DeviceType::CPU;
   torch::Device device = torch::Device(device_type, gpu_id);
-  model.to(device);
+  auto model = torch::jit::load(starmap_filepath,
+                                /*map_location=*/device);
   return model;
 }
 

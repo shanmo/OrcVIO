@@ -48,7 +48,6 @@ namespace starmap
 
   private:
   virtual void onInit() {
-    NODELET_DEBUG("Initializing ");
     namespace sph = std::placeholders; // for _1, _2, ...
     std::string image_topic, bbox_topic, keypoint_topic, visualization_topic,
     starmap_model_path;
@@ -76,7 +75,7 @@ namespace starmap
 
     auto model = starmap::model_load(starmap_model_path, gpu_id);
 
-    NODELET_DEBUG("Subscribing to %s", image_topic.c_str());
+    NODELET_INFO("Subscribing to %s", image_topic.c_str());
     image_trans_ = make_unique<image_transport::ImageTransport>(private_nh);
     image_sub_.subscribe(nh, image_topic, 10);
     bbox_sub_.subscribe(nh, bbox_topic, 10);
@@ -94,7 +93,9 @@ namespace starmap
     int ymin = max<int>(0, bbox.ymin);
     int xmax = min<int>(image.cols, bbox.xmax);
     int ymax = min<int>(image.rows, bbox.ymax);
-    cv::Rect2i bbox_rect(xmin, ymin, xmax - xmin, ymax - ymin);
+    cv::Rect2i bbox_rect(xmin, ymin,
+                         max<int>(0, xmax - xmin),
+                         max<int>(0, ymax - ymin));
     return bbox_rect;
   }
 
@@ -164,7 +165,7 @@ namespace starmap
     }
 
     starmap_ros_msgs::TrackedBBoxListWithKeypointsPtr bbox_with_kp_list =
-      boost::make_shared<starmap_ros_msgs::TrackedBBoxListWithKeypoints>();
+    boost::make_shared<starmap_ros_msgs::TrackedBBoxListWithKeypoints>();
     bbox_with_kp_list->header.stamp = message->header.stamp;
     bbox_with_kp_list->header.frame_id = message->header.frame_id;
     for (auto& bbox: bboxes->bounding_boxes) {
@@ -172,7 +173,6 @@ namespace starmap
       auto bbox_rect = safe_rect_bbox(bbox, img_mat);
       starmap_ros_msgs::TrackedBBoxWithKeypoints bbox_with_kp;
       if (bbox_rect.area() >= 1) {
-        // auto bboxroi = img->image(bbox_rect);
         auto bboxroi = img_mat(bbox_rect);
         Mat bboxfloat;
         bboxroi.convertTo(bboxfloat, CV_32FC3, 1/255.0);

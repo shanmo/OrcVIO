@@ -342,7 +342,7 @@ void TestSORT(string train_file, string data_file, string output_file, string se
 			for (auto tb : frameTrackingResult)
 				cv::rectangle(img, tb.box, randColor[tb.id % CNUM], 2, 8, 0);
 			imshow(seqName, img);
-			cvWaitKey(40);
+            cv::waitKey(40);
 		}
 	}
 

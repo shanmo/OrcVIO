@@ -3,7 +3,7 @@ echo $SCRIPTDIR
 export CATKIN_WORKSPACE=$SCRIPTDIR
 
 sudo sh install-deps/install-apt-get-packages.sh
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 sh install-deps/run-rosdep.sh
 
 {
@@ -23,7 +23,7 @@ sh install-deps/run-rosdep.sh
 }
 export CMAKE_PREFIX_PATH=$INSTALL_PREFIX
 
-PYVER=2.7
+PYVER=3.8
 virtualenv --python=python${PYVER} $CATKIN_WORKSPACE/.tox/py${PYVER/./}
 source $CATKIN_WORKSPACE/.tox/py${PYVER/./}/bin/activate
 pip install --no-cache -r install-deps/pip-requirements.txt
@@ -33,7 +33,7 @@ source $INSTALL_PREFIX/activate.sh
 
 cd $CATKIN_WORKSPACE
 catkin init -w $CATKIN_WORKSPACE
-catkin config --extend /opt/ros/melodic/
+catkin config --extend /opt/ros/$ROS_DISTRO/
 catkin build
 source setup.bash
 

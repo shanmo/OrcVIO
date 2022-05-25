@@ -40,8 +40,8 @@
 #include <string>
 #include <fstream>
 
-#include <opencv/cv.hpp>
-#include <opencv2/core/core.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/calib3d.hpp>
 
 #include <Eigen/Eigen>
 #include <Eigen/StdVector>

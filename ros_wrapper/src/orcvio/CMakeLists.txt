@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(orcvio)
 
 set(CMAKE_BUILD_TYPE "Release")
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 # Modify cmake module path if new .cmake files are required
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/../../../cmake")
@@ -74,6 +74,7 @@ add_library(image_processor
 )
 target_link_libraries(image_processor
     ${OpenCV_LIBRARIES}
+    Sophus::Sophus
 )
 
 # Initializer
@@ -83,6 +84,7 @@ add_library(staticInitializer
 )
 target_link_libraries(staticInitializer
     ${SUITESPARSE_LIBRARIES}
+    Sophus::Sophus
 )
 # -- Dynamic Initializer
 add_library(dynamicInitializer
@@ -97,6 +99,7 @@ target_link_libraries(dynamicInitializer
     ${SUITESPARSE_LIBRARIES}
     ${CERES_LIBRARIES}
     ${OpenCV_LIBRARIES}
+    Sophus::Sophus
 )
 # -- Flexible Initializer
 add_library(flexibleInitializer
@@ -105,6 +108,7 @@ add_library(flexibleInitializer
 target_link_libraries(flexibleInitializer
     staticInitializer
     dynamicInitializer
+    Sophus::Sophus
 )
 
 # Estimator
@@ -115,6 +119,7 @@ target_link_libraries(estimator
     flexibleInitializer
     ${SUITESPARSE_LIBRARIES}
     ${OpenCV_LIBRARIES}
+    Sophus::Sophus
 )
 
 # System Manger
@@ -130,6 +135,7 @@ add_dependencies(system_manager
 target_link_libraries(system_manager
     image_processor estimator
     ${catkin_LIBRARIES}
+    Sophus::Sophus
 )
 
 # Object Mapper 
@@ -149,7 +155,7 @@ add_dependencies(object_mapper
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
     ${catkin_EXPORTED_TARGETS}
 )
-target_link_libraries(object_mapper ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(object_mapper ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Boost_LIBRARIES} Sophus::Sophus)
 
 # System Manager nodelet
 add_library(OrcVIO_Nodelets
@@ -164,13 +170,14 @@ target_link_libraries(OrcVIO_Nodelets
     system_manager
     object_mapper
     ${catkin_LIBRARIES}
+    Sophus::Sophus
 )
 
 if (catkin_FOUND)
     
     # gt path publisher
     add_executable(publish_gt_path src/publish_gt_path.cpp src/gt_odom.cpp)
-    target_link_libraries(publish_gt_path ${catkin_LIBRARIES})
+    target_link_libraries(publish_gt_path ${catkin_LIBRARIES} Sophus::Sophus)
 
 endif()
 

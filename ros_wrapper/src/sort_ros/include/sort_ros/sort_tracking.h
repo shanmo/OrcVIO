@@ -34,6 +34,7 @@ struct Config {
     double iou_threshold;
     bool use_centroid_dist_flag; 
     double centroid_dist_threshold; 
+    vector<string> class_labels; 
 };
 
 
@@ -52,7 +53,6 @@ public:
 
     SortTracker() : frame_count(0), max_age(3), min_hits(5), trkNum(0), detNum(0), iou_threshold(0.3)
     {
-        gen_class();
         gen_colors();
     }
 

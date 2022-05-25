@@ -1,7 +1,7 @@
 [submodule "ros_wrapper/src/darknet_ros"]
 	path = ros_wrapper/src/darknet_ros
 	url = https://github.com/wecacuee/darknet_ros.git
-	branch = wecacuee-yolov4
+	branch = wecacuee-yolov1-sort-ros-compat
 [submodule "ros_wrapper/src/starmap_ros_msgs"]
 	path = ros_wrapper/src/starmap_ros_msgs
 	url = https://github.com/wecacuee/starmap_ros_msgs.git
@@ -15,3 +15,6 @@
 	url = https://github.com/catkin/catkin_simple.git
 	branch = master
 
+[submodule "ros_wrapper/src/StarMap/models"]
+	path = ros_wrapper/src/StarMap/models
+	url = https://github.com/wecacuee/StarMap-models.git

@@ -11,7 +11,7 @@ ENDIF()
 find_package(catkin_simple REQUIRED)
 
 # Include libraries
-find_package(OpenCV 3 REQUIRED)
+find_package(OpenCV 4 REQUIRED)
 
 # display message to user
 message(STATUS "OPENCV VERSION: " ${OpenCV_VERSION})
